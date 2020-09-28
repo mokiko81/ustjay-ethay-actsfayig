@@ -1,3 +1,10 @@
+'''
+Pig Latinizer Fact Mashup Script:
+
+http://unkno.com (facts)
+https://hidden-journey-62459.herokuapp.com/ (pig latin)
+
+'''
 import os
 
 import requests
@@ -6,8 +13,10 @@ from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
+latinizer = 'http://hidden-journey-62459.herokuapp.com/piglatinize/'
 
 def get_fact():
+    '''Returns a random fact from unkno.com'''
 
     response = requests.get("http://unkno.com")
 
@@ -19,7 +28,11 @@ def get_fact():
 
 @app.route('/')
 def home():
-    return "FILL ME!"
+    '''Returns a url with a pig-latinized fact'''
+    fact = get_fact()
+    payload = {'input_text': fact}
+    response = requests.post(url=latinizer,data=payload)
+    return response.url
 
 
 if __name__ == "__main__":
